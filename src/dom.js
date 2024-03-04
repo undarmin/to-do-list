@@ -1,6 +1,52 @@
 const DOM = (function () {
     const wrapper = document.querySelector("#wrapper");
+    const addTaskButton = document.querySelector("#add-task");
+    const taskModal = document.querySelector("#task-modal");
+    const taskModalComponents = {
+      form: document.querySelector("#task-info"),
+      closeButton: document.querySelector("#close-modal"),
+      submitButton: document.querySelector("#submit-modal"),
+    }
+
     const tasks = [];
+
+    addTaskButton.addEventListener('click', displayTaskModal);
+    taskModalComponents.closeButton.addEventListener('click', 
+    closeTaskModal)
+
+    function displayTaskModal() {
+      taskModal.showModal();
+    }
+
+    function resetForm(form) {
+      form.reset();
+    }
+
+    function submitTaskData(e) {
+      const formData = Object.fromEntries(new FormData(
+      taskModalComponents.form));
+      if (checkFormData(formData)) {
+        resetForm(taskModalComponents.form);
+        e.preventDefault();
+        closeTaskModal();
+      } else {
+        return;
+      }
+      return formData;
+    }
+
+    function checkFormData(data) {
+      for (let key in data) {
+        if (!data[key]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function closeTaskModal() {
+      taskModal.close();
+    }
   
     function createDisplayOfTask(task) {
       const title = document.createElement('h4');
@@ -31,7 +77,7 @@ const DOM = (function () {
       tasks.push({ task, createdNode });
     }
   
-    return { createTaskInDOM };
+    return { taskModalComponents, submitTaskData, createTaskInDOM };
   })();
 
 export default DOM;
