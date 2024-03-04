@@ -1,10 +1,14 @@
-import Task from './task.js';
-import DOM from './dom.js';
+import Task from "./task.js";
+import DOM from "./dom.js";
 
-const task1 = new Task(
-  "Create to-do list app",
-  "Create to-do list app from TOP",
-  "12/12/121212",
-  4
-);
-DOM.createTaskInDOM(task1);
+DOM.taskModalComponents.submitButton.addEventListener("click", (e) => {
+  const formData = DOM.submitTaskData(e);
+  if (!formData) {
+    return;
+  }
+  const task = new Task(
+    formData.title, formData.description,
+    formData.duedate, formData.priority
+  )
+  DOM.createTaskInDOM(task);
+});
