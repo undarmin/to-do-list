@@ -60,8 +60,12 @@ const DOM = (function () {
   
       const priority = document.createElement('span');
       priority.textContent = task.priority;
+
+      const deleteTask = document.createElement('button');
+      const taskObj = {title, description, dueDate, priority, deleteTask};
+      deleteTask.textContent = "Delete Task";
   
-      return {title, description, dueDate, priority};
+      return taskObj;
     }
   
     function createTaskInDOM(task) {
@@ -70,14 +74,30 @@ const DOM = (function () {
       /************** STYLE FOR TESTING ONLY **************/
       createdNode.style.border = '1px solid black';
       
-      createdNode.append(components.title, components.description,
-          components.dueDate, components.priority)
+      for (let componentKey in components) {
+        createdNode.appendChild(components[componentKey]);
+      }
+
+      components.deleteTask.addEventListener('click', () => {
+        removeTask({task, createdNode}, tasks);
+      })
   
       wrapper.appendChild(createdNode);
-      tasks.push({ task, createdNode });
+      tasks.push({task, createdNode});
+      return {task, createdNode};
+    }
+
+    function removeTask(taskObj, tasks) {
+      const node = taskObj.createdNode;
+      const task = taskObj.task;
+
+      wrapper.removeChild(node);
+      tasks.splice(tasks.indexOf(task), 1);
     }
   
-    return { taskModalComponents, submitTaskData, createTaskInDOM };
+    return {
+taskModalComponents, submitTaskData, createTaskInDOM, removeTask
+};
   })();
 
 export default DOM;
