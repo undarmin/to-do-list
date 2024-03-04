@@ -15,4 +15,3 @@ DOM.taskModalComponents.submitButton.addEventListener("click", (e) => {
 
 const st = new Task("m", "m", "m/m/m", "9");
 const stn = DOM.createTaskInDOM(st);
-tasks.push(stn);
