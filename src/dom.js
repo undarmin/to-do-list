@@ -7,34 +7,61 @@ const DOM = (function () {
       closeButton: document.querySelector("#close-modal"),
       submitButton: document.querySelector("#submit-modal"),
     }
+
+    const projectModal = document.querySelector("#project-modal");
+    const projectModalComponents = {
+      form: document.querySelector("#project-info"),
+      closeButton: document.querySelector("#close-project-modal"),
+      submitButton: document.querySelector("#submit-project-modal")
+    }
+
     const activeProjectNode = document.querySelector("#active-project");
+    const projectsList = document.querySelector("#projects");
+    const newProjectButton = document.querySelector("#new-project");
+
+    newProjectButton.addEventListener('click', () => {
+      displayModal(projectModal);
+    });
+    projectModalComponents.closeButton.addEventListener('click', () => {
+      closeModal(projectModal);
+    })
 
     function setProjectNode(active) {
       activeProjectNode.textContent = "Active Project: " + 
-      active.formalName;
+      active.name;
     }
 
     const tasks = [];
 
-    addTaskButton.addEventListener('click', displayTaskModal);
+    addTaskButton.addEventListener('click', () => {
+      displayModal(taskModal)
+    });
     taskModalComponents.closeButton.addEventListener('click', 
-    closeTaskModal)
+    () => {
+      closeModal(taskModal);
+    })
 
-    function displayTaskModal() {
-      taskModal.showModal();
+    function displayModal(modal) {
+      modal.showModal();
+    }
+
+    function addProjectToProjectList(project) {
+      const li = document.createElement('li');
+      li.textContent = project.name;
+      projectsList.appendChild(li);
     }
 
     function resetForm(form) {
       form.reset();
     }
 
-    function submitTaskData(e) {
+    function submitData(e, modal, modalComponents) {
       const formData = Object.fromEntries(new FormData(
-      taskModalComponents.form));
+      modalComponents.form));
       if (checkFormData(formData)) {
-        resetForm(taskModalComponents.form);
+        resetForm(modalComponents.form);
         e.preventDefault();
-        closeTaskModal();
+        closeModal(modal);
       } else {
         return;
       }
@@ -50,15 +77,16 @@ const DOM = (function () {
       return true;
     }
 
-    function closeTaskModal() {
-      taskModal.close();
+    function closeModal(modal) {
+      modal.close();
     }
 
     function createProjectNode(project) {
       const projectNode = document.createElement('div');
       const title = document.createElement('p');
-      title.textContent = project.formalName + " Project";
+      title.textContent = project.name + " Project";
       projectNode.appendChild(title);
+      addProjectToProjectList(project);
       return projectNode;
     }
 
@@ -114,8 +142,9 @@ const DOM = (function () {
     }
   
     return {
-taskModalComponents, submitTaskData, createTaskInDOM, removeTask,
-setProjectNode, createProjectNode, appendProjectNode
+taskModalComponents, submitData, createTaskInDOM, removeTask,
+setProjectNode, createProjectNode, appendProjectNode, taskModal,
+taskModalComponents, projectModal, projectModalComponents
 };
   })();
 
