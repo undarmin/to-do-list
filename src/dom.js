@@ -84,8 +84,11 @@ const DOM = (function () {
     function createProjectNode(project) {
       const projectNode = document.createElement('div');
       const title = document.createElement('p');
+      const setAsDefault = document.createElement('button');
+      setAsDefault.textContent = "set as active";
       title.textContent = project.name + " Project";
       projectNode.appendChild(title);
+      projectNode.appendChild(setAsDefault);
       addProjectToProjectList(project);
       return projectNode;
     }
