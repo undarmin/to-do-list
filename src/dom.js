@@ -7,6 +7,12 @@ const DOM = (function () {
       closeButton: document.querySelector("#close-modal"),
       submitButton: document.querySelector("#submit-modal"),
     }
+    const activeProjectNode = document.querySelector("#active-project");
+
+    function setProjectNode(active) {
+      activeProjectNode.textContent = "Active Project: " + 
+      active.formalName;
+    }
 
     const tasks = [];
 
@@ -47,6 +53,18 @@ const DOM = (function () {
     function closeTaskModal() {
       taskModal.close();
     }
+
+    function createProjectNode(project) {
+      const projectNode = document.createElement('div');
+      const title = document.createElement('p');
+      title.textContent = project.formalName + " Project";
+      projectNode.appendChild(title);
+      return projectNode;
+    }
+
+    function appendProjectNode(projectNode) {
+      wrapper.appendChild(projectNode);
+    }
   
     function createDisplayOfTask(task) {
       const title = document.createElement('h4');
@@ -68,7 +86,7 @@ const DOM = (function () {
       return taskObj;
     }
   
-    function createTaskInDOM(task) {
+    function createTaskInDOM(task, projectNode) {
       const createdNode = document.createElement("div");
       const components = createDisplayOfTask(task);
       /************** STYLE FOR TESTING ONLY **************/
@@ -79,24 +97,25 @@ const DOM = (function () {
       }
 
       components.deleteTask.addEventListener('click', () => {
-        removeTask({task, createdNode}, tasks);
+        removeTask({task, createdNode}, tasks, projectNode);
       })
   
-      wrapper.appendChild(createdNode);
+      projectNode.appendChild(createdNode);
       tasks.push({task, createdNode});
       return {task, createdNode};
     }
 
-    function removeTask(taskObj, tasks) {
+    function removeTask(taskObj, tasks, projectNode) {
       const node = taskObj.createdNode;
       const task = taskObj.task;
 
-      wrapper.removeChild(node);
+      projectNode.removeChild(node);
       tasks.splice(tasks.indexOf(task), 1);
     }
   
     return {
-taskModalComponents, submitTaskData, createTaskInDOM, removeTask
+taskModalComponents, submitTaskData, createTaskInDOM, removeTask,
+setProjectNode, createProjectNode, appendProjectNode
 };
   })();
 
