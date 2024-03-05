@@ -17,6 +17,12 @@ projects.all.push(defaultProject);
 DOM.setProjectNode(projects.active);
 projectNodes.active = defprojnode;
 projectNodes.all.push(defprojnode);
+(()=>{const setAsDefault = defprojnode.children[1];
+setAsDefault.addEventListener('click', () => {
+  DOM.setProjectNode(defaultProject)
+  projects.active = defaultProject;
+  projectNodes.active = defprojnode;
+})})()
 
 DOM.appendProjectNode(defprojnode);
 
@@ -35,7 +41,12 @@ function createProject(e) {
     DOM.setProjectNode(projects.active);
     projectNodes.active = projectNode;
   }
-
+  const setAsDefault = projectNode.children[1];
+  setAsDefault.addEventListener('click', () => {
+    DOM.setProjectNode(project)
+    projects.active = project;
+    projectNodes.active = projectNode;
+  })
 }
 
 function createTask(e) {
@@ -47,6 +58,7 @@ function createTask(e) {
     formData.title, formData.description,
     formData.duedate, formData.priority
   )
+  console.log(projects.active, projectNodes.active);
   projects.active.addTask(task);
   const taskNode = DOM.createTaskInDOM(task, projectNodes.active);
   projects.active.addTaskNode(taskNode);
