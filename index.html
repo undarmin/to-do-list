@@ -9,9 +9,25 @@
 <body>
     <h1>doitlater</h1>
     <p id="active-project"></p>
+    <ol id="projects"></ol>
+    <button id="new-project">New Project</button>
     <div id='wrapper'>
         <button id="add-task">Add Task</button>
     </div>
+    <dialog id="project-modal">
+        <form id="project-info">
+            <div>
+                <label for="name">Name: </label>
+                <input type="text" name="name" id="name" required="required">
+            </div>
+            <div>
+                <label for="setActive">Set as Active? </label>
+                <input type="checkbox" name="setActive" id="setActive">
+            </div>
+            <button type="button" id="close-project-modal">Close</button>
+            <button type="submit" id="submit-project-modal">Submit</button>
+        </form>
+    </dialog>
     <dialog id="task-modal">
         <form id="task-info">
 
